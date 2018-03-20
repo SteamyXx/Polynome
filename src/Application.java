@@ -46,34 +46,54 @@ public class Application {
 
   public static String retirerPuissance(String expression) {
     int posPuissance = expression.indexOf("^");
-    int cmp = posPuissance;
+    int cmp = 0;
     char currentChar = '0';
     int nbrParenthOuvreTrouve = 0;
     String facteurGauche = "";
+    String remplacement = "";
     int puissance = 0;
     while (posPuissance != -1) {
-      
-      while (currentChar != ')' || nbrParenthOuvreTrouve != 0) {
-        currentChar = expression.charAt(cmp);
-        if (currentChar == ')') {
-          nbrParenthOuvreTrouve++;
-        } else if (currentChar != '(') {
-          facteurGauche = currentChar + facteurGauche;
-        } else if (currentChar == '(' && nbrParenthOuvreTrouve > 1) {
-          nbrParenthOuvreTrouve--;
+      if (expression.charAt(posPuissance-1) == ')') {
+        currentChar = '0';
+        nbrParenthOuvreTrouve = 0;
+        facteurGauche = "";
+        puissance = Integer.parseInt(String.valueOf(expression.charAt(posPuissance+1)));
+        remplacement = "";
+        cmp = posPuissance-2;
+        while (currentChar != '(' || nbrParenthOuvreTrouve != 0) {
+          currentChar = expression.charAt(cmp);
+          System.out.println(currentChar);
+          if (currentChar == ')') {
+            nbrParenthOuvreTrouve++;
+          } else if (currentChar != '(') {
+            facteurGauche = currentChar + facteurGauche;
+          } else if (currentChar == '(' && nbrParenthOuvreTrouve >= 1) {
+            nbrParenthOuvreTrouve--;
+          }
+          cmp--;
         }
-        cmp--;
+        System.out.println(facteurGauche);
+        for (int i = 0; i<puissance-1; i++) {
+          remplacement += "("+facteurGauche+")";
+        }
+        System.out.println("puissance : "+puissance);
+        expression = expression.replace("^"+puissance, remplacement);
+        System.out.println("expression : "+expression);
+        posPuissance = expression.indexOf("^");
+      } else {
+        posPuissance = expression.indexOf("^", posPuissance+1);
       }
-      for (int i = ; ; ) {
-
-      }
-      posPuissance = expression.indexOf("^");
     }
+    return expression;
   }
 
   public static String developper(String expression) {
+    System.out.println("entrée : "+expression);
     expression = Application.retirerPuissance(expression);
     int posParenth = expression.indexOf("(");
+    if (posParenth == 0) {
+      posParenth = expression.indexOf("(", 1);
+    }
     if (posParenth != -1) {
       if (expression.charAt(posParenth-1) != '+' && expression.charAt(posParenth-1) != '-') {
         String facteurGauche = "";
@@ -89,7 +109,7 @@ public class Application {
             nbrParenthOuvreTrouve++;
           } else if (currentChar != ')') {
             facteurDroit += currentChar;
-          } else if (currentChar == ')' && nbrParenthOuvreTrouve > 1) {
+          } else if (currentChar == ')' && nbrParenthOuvreTrouve >= 1) {
             nbrParenthOuvreTrouve--;
           }
           cmp++;
@@ -100,16 +120,18 @@ public class Application {
         nbrParenthOuvreTrouve = 0;
         cmp = posParenth-1;
         if (expression.charAt(posParenth-1) == ')') {
-          while (currentChar != ')' || nbrParenthOuvreTrouve != 0) {
+          while (currentChar != '(' || nbrParenthOuvreTrouve != 0) {
             currentChar = expression.charAt(cmp);
             if (currentChar == ')') {
               nbrParenthOuvreTrouve++;
             } else if (currentChar != '(') {
               facteurGauche = currentChar + facteurGauche;
-            } else if (currentChar == '(' && nbrParenthOuvreTrouve > 1) {
+            } else if (currentChar == '(' && nbrParenthOuvreTrouve >= 1) {
               nbrParenthOuvreTrouve--;
             }
-            cmp--;
+            if (currentChar != '(' || nbrParenthOuvreTrouve != 0) {
+              cmp--;
+            }
           }
         } else {
           while (currentChar != '+' && currentChar != '-' && cmp >= 0) {
@@ -121,23 +143,29 @@ public class Application {
           }
         }
         System.out.println("facteurGauche : "+facteurGauche);
-        resteGauche = Application.split(expression, cmp+1)[0];
+        resteGauche = Application.split(expression, cmp)[0];
         System.out.println("resteGauche : "+resteGauche);
         System.out.println("resteDroit : "+resteDroit);
         facteurGauche = Application.developper(facteurGauche);
         facteurDroit = Application.developper(facteurDroit);
         Polynome fg = new Polynome(facteurGauche);
         Polynome fd = new Polynome(facteurDroit);
-        Polynome fgxfd = new Polynome(fg.developper(fd));
-        expression = resteGauche + fgxfd.toString() + resteDroit;
+        Polynome fgxfd = new Polynome(fg.developperEtReduire(fd));
+        if (resteDroit.charAt(0) != '(') {
+          expression = resteGauche + fgxfd.toString() + resteDroit;
+        } else {
+          expression = resteGauche + "(" + fgxfd.toString() + ")" + resteDroit;
+        }
       }
     }
-    if (expression.contains("(")) {
-      Application.developper(expression);
-    } else {
+    System.out.println("expression avant test de récurrence : "+expression);
+    if (!expression.contains("(") || (Application.nombreOccurenceCaractere(expression, '(') == 1 && expression.charAt(0) == '(') && expression.charAt(expression.length()-1) == ')') {
       Polynome res = new Polynome(Polynome.reduire(Polynome.stringToListeNombreX(expression)));
       expression = res.toString();
+    } else {
+      expression = Application.developper(expression);
     }
+    System.out.println("return : "+expression);
     return expression;
   }
 

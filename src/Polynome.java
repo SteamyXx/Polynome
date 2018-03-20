@@ -55,6 +55,9 @@ public class Polynome {
   }
 
   public static List<NombreX> stringToListeNombreX(String polynome) {
+    if (polynome.charAt(0) == '(' && polynome.charAt(polynome.length()-1) == ')') {
+      polynome = polynome.substring(1, polynome.length()-1);
+    }
     List<NombreX> termes = new ArrayList<NombreX>();
     char premierChar = polynome.charAt(0);
     String polynomeAjuste = (premierChar == '-' || premierChar == '+') ? Application.ajouterDevant(polynome.substring(1, polynome.length()), '+', '-') : Application.ajouterDevant(polynome, '+', '-');
