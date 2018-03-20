@@ -17,6 +17,7 @@ public class Polynome {
     this.termes = this.stringToListeNombreX(polynome);
   }
 
+
   public List<NombreX> developper(Polynome polynome) {
     List<NombreX> termes = new ArrayList<NombreX>();
     for (NombreX nbrThis : this.termes) {
@@ -27,7 +28,7 @@ public class Polynome {
     return termes;
   }
 
-  public List<NombreX> reduire(List<NombreX> termes) {
+  public static List<NombreX> reduire(List<NombreX> termes) {
     List<NombreX> termesRed = new ArrayList<NombreX>();
     Collections.sort(termes);
     Collections.reverse(termes);
@@ -53,7 +54,7 @@ public class Polynome {
     return this.reduire(this.developper(polynome));
   }
 
-  public List<NombreX> stringToListeNombreX(String polynome) {
+  public static List<NombreX> stringToListeNombreX(String polynome) {
     List<NombreX> termes = new ArrayList<NombreX>();
     char premierChar = polynome.charAt(0);
     String polynomeAjuste = (premierChar == '-' || premierChar == '+') ? Application.ajouterDevant(polynome.substring(1, polynome.length()), '+', '-') : Application.ajouterDevant(polynome, '+', '-');
@@ -66,6 +67,14 @@ public class Polynome {
       }
     }
     return termes;
+  }
+
+  public int calculP(int x) {
+    int res = 0;
+    for (NombreX nbr : this.termes) {
+      res += nbr.calculP(x);
+    }
+    return res;
   }
 
   public List<NombreX> getTermes() {

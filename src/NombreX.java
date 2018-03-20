@@ -39,6 +39,10 @@ public class NombreX implements Comparable<NombreX> {
     }
   }
 
+  public int calculP(int x) {
+    return this.coeff * (int)Math.pow(x, this.degreX);
+  }
+
   public int getCoeff() {
     return this.coeff;
   }

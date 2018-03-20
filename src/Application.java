@@ -44,12 +44,120 @@ public class Application {
     return nbrOccChar;
   }
 
+  public static String retirerPuissance(String expression) {
+    int posPuissance = expression.indexOf("^");
+    int cmp = posPuissance;
+    char currentChar = '0';
+    int nbrParenthOuvreTrouve = 0;
+    String facteurGauche = "";
+    int puissance = 0;
+    while (posPuissance != -1) {
+      
+      while (currentChar != ')' || nbrParenthOuvreTrouve != 0) {
+        currentChar = expression.charAt(cmp);
+        if (currentChar == ')') {
+          nbrParenthOuvreTrouve++;
+        } else if (currentChar != '(') {
+          facteurGauche = currentChar + facteurGauche;
+        } else if (currentChar == '(' && nbrParenthOuvreTrouve > 1) {
+          nbrParenthOuvreTrouve--;
+        }
+        cmp--;
+      }
+      for (int i = ; ; ) {
+
+      }
+      posPuissance = expression.indexOf("^");
+    }
+  }
+
+  public static String developper(String expression) {
+    expression = Application.retirerPuissance(expression);
+    int posParenth = expression.indexOf("(");
+    if (posParenth != -1) {
+      if (expression.charAt(posParenth-1) != '+' && expression.charAt(posParenth-1) != '-') {
+        String facteurGauche = "";
+        String facteurDroit = "";
+        String resteGauche = "";
+        String resteDroit = "";
+        char currentChar = '0';
+        int nbrParenthOuvreTrouve = 0;
+        int cmp = posParenth+1;
+        while (currentChar != ')' || nbrParenthOuvreTrouve != 0) {
+          currentChar = expression.charAt(cmp);
+          if (currentChar == '(') {
+            nbrParenthOuvreTrouve++;
+          } else if (currentChar != ')') {
+            facteurDroit += currentChar;
+          } else if (currentChar == ')' && nbrParenthOuvreTrouve > 1) {
+            nbrParenthOuvreTrouve--;
+          }
+          cmp++;
+        }
+        System.out.println("facteurDroit : "+facteurDroit);
+        resteDroit = Application.split(expression, cmp)[1];
+        currentChar = '0';
+        nbrParenthOuvreTrouve = 0;
+        cmp = posParenth-1;
+        if (expression.charAt(posParenth-1) == ')') {
+          while (currentChar != ')' || nbrParenthOuvreTrouve != 0) {
+            currentChar = expression.charAt(cmp);
+            if (currentChar == ')') {
+              nbrParenthOuvreTrouve++;
+            } else if (currentChar != '(') {
+              facteurGauche = currentChar + facteurGauche;
+            } else if (currentChar == '(' && nbrParenthOuvreTrouve > 1) {
+              nbrParenthOuvreTrouve--;
+            }
+            cmp--;
+          }
+        } else {
+          while (currentChar != '+' && currentChar != '-' && cmp >= 0) {
+            currentChar = expression.charAt(cmp);
+            if (currentChar != '+' && currentChar != '-') {
+              facteurGauche = currentChar + facteurGauche;
+            }
+            cmp--;
+          }
+        }
+        System.out.println("facteurGauche : "+facteurGauche);
+        resteGauche = Application.split(expression, cmp+1)[0];
+        System.out.println("resteGauche : "+resteGauche);
+        System.out.println("resteDroit : "+resteDroit);
+        facteurGauche = Application.developper(facteurGauche);
+        facteurDroit = Application.developper(facteurDroit);
+        Polynome fg = new Polynome(facteurGauche);
+        Polynome fd = new Polynome(facteurDroit);
+        Polynome fgxfd = new Polynome(fg.developper(fd));
+        expression = resteGauche + fgxfd.toString() + resteDroit;
+      }
+    }
+    if (expression.contains("(")) {
+      Application.developper(expression);
+    } else {
+      Polynome res = new Polynome(Polynome.reduire(Polynome.stringToListeNombreX(expression)));
+      expression = res.toString();
+    }
+    return expression;
+  }
+
 
   public static void main(String[] args) {
-    Scanner s = new Scanner(System.in);
-    Scanner s2 = new Scanner(System.in);
-    String x = "", y = "";
-    List<Point> liste_point = new ArrayList<Point>();
+
+    /*
+    * Developper expression
+    */
+
+    Scanner sc = new Scanner(System.in);
+    System.out.print("Votre Expression : E = ");
+    String expr = sc.nextLine();
+    String dev = Application.developper(expr);
+    System.out.println(dev);
+
+    // Scanner s = new Scanner(System.in);
+    // Scanner s2 = new Scanner(System.in);
+    // String x = "", y = "";
+    // List<Point> liste_point = new ArrayList<Point>();
 
 
     // Point p1 = new Point(7.5, 2.738613);
@@ -129,17 +237,17 @@ public class Application {
     * String to Polynome (new)
     */
 
-    Scanner sc = new Scanner(System.in);
-    System.out.print("Votre 1er Polynome : P(x) = ");
-    String poly = sc.nextLine();
-    Polynome pol = new Polynome(poly);
-    System.out.println("P(x) = "+pol.toString());
-    System.out.print("Votre 2eme Polynome : P(x) = ");
-    String poly2 = sc.nextLine();
-    Polynome pol2 = new Polynome(poly2);
-    System.out.println("P'(x) = "+pol2.toString());
-    Polynome devEtRed = new Polynome(pol.developperEtReduire(pol2));
-    System.out.println("\n("+pol.toString()+")*("+pol2.toString()+") = "+devEtRed.toString());
+    // Scanner sc = new Scanner(System.in);
+    // System.out.print("Votre 1er Polynome : P(x) = ");
+    // String poly = sc.nextLine();
+    // Polynome pol = new Polynome(poly);
+    // System.out.println("P(x) = "+pol.toString());
+    // System.out.print("Votre 2eme Polynome : P(x) = ");
+    // String poly2 = sc.nextLine();
+    // Polynome pol2 = new Polynome(poly2);
+    // System.out.println("P'(x) = "+pol2.toString());
+    // Polynome devEtRed = new Polynome(pol.developperEtReduire(pol2));
+    // System.out.println("\n("+pol.toString()+")*("+pol2.toString()+") = "+devEtRed.toString());
 
 
   }
