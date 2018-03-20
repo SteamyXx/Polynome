@@ -5,15 +5,51 @@ import math.*;
 
 public class Application {
 
+  public static String ajouterDevant(String str, char ajouterLui, char devantLui) {
+    int nbrOccCharTrouve = 0;
+    int pos = 0;
+    int nbrOccChar = Application.nombreOccurenceCaractere(str, devantLui);
+    while (nbrOccCharTrouve < nbrOccChar) {
+      char currentChar = str.charAt(pos);
+      if (currentChar == devantLui) {
+        if (pos == 0) {
+          str = ajouterLui + str;
+        } else {
+          String[] splitedStr = Application.split(str, pos);
+          str = splitedStr[0] + ajouterLui + splitedStr[1];
+        }
+        nbrOccCharTrouve++;
+        pos++;
+      }
+      pos++;
+    }
+    return str;
+  }
+
+  public static String[] split(String str, int pos) {
+    String[] splitedStr = new String[2];
+    splitedStr[0] = str.substring(0, pos);
+    splitedStr[1] = str.substring(pos, str.length());
+    return splitedStr;
+  }
+
+  public static int nombreOccurenceCaractere(String str, char caractere) {
+    char[] strToCharArray = str.toCharArray();
+    int nbrOccChar = 0;
+    for (char c : strToCharArray) {
+      if (c == caractere) {
+        nbrOccChar++;
+      }
+    }
+    return nbrOccChar;
+  }
+
+
   public static void main(String[] args) {
     Scanner s = new Scanner(System.in);
     Scanner s2 = new Scanner(System.in);
     String x = "", y = "";
     List<Point> liste_point = new ArrayList<Point>();
-
-
-
-
 
 
     // Point p1 = new Point(7.5, 2.738613);
@@ -32,15 +68,15 @@ public class Application {
     * RACINES
     */
 
-    System.out.println("------Recherche des racines------");
-    System.out.print("Votre Polynome : P(x) = ");
-    Scanner sc = new Scanner(System.in);
-    String poly = sc.nextLine();
-    Polynome pol = Polynome.stringToPolynome(poly);
-    System.out.println(pol);
+    // System.out.println("------Recherche des racines------");
+    // System.out.print("Votre Polynome : P(x) = ");
+    // Scanner sc = new Scanner(System.in);
+    // String poly = sc.nextLine();
+    // Polynome pol = Polynome.stringToPolynome(poly);
+    // System.out.println(pol);
     // System.out.println("Saisissez un nombre proche de la racine recherché : ");
     // double racine = sc.nextDouble();
-    pol.racines();
+    // pol.racines();
 
 
 
@@ -87,6 +123,23 @@ public class Application {
     //   i++;
     // }
     // System.out.println("P(x) = "+PolynomeDeNewton.getPolynomeDeNewton(liste_point)+"\n");
+
+
+    /*
+    * String to Polynome (new)
+    */
+
+    Scanner sc = new Scanner(System.in);
+    System.out.print("Votre 1er Polynome : P(x) = ");
+    String poly = sc.nextLine();
+    Polynome pol = new Polynome(poly);
+    System.out.println("P(x) = "+pol.toString());
+    System.out.print("Votre 2eme Polynome : P(x) = ");
+    String poly2 = sc.nextLine();
+    Polynome pol2 = new Polynome(poly2);
+    System.out.println("P'(x) = "+pol2.toString());
+    Polynome devEtRed = new Polynome(pol.developperEtReduire(pol2));
+    System.out.println("\n("+pol.toString()+")*("+pol2.toString()+") = "+devEtRed.toString());
 
 
   }
