@@ -32,7 +32,7 @@ public class PolynomeDeNewton {
       }
       points.remove(taille-1);
     }
-    Polynome p = new Polynome(polynomeDeNewton);
+    PolynomeNul p = new PolynomeNul(polynomeDeNewton);
     String res = "";
     for (int i = 0; i<p.getPol().size(); i++) {
       if (p.getPol().get(i) != 0) {

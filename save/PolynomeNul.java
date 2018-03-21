@@ -2,24 +2,24 @@ package math;
 
 import java.util.*;
 
-public class Polynome {
+public class PolynomeNul {
 
   private List<Double> coefficients;
   private List<Double> racines;
 
 
   //indice i = degré
-  public Polynome(List<Double> coeff) {
+  public PolynomeNul(List<Double> coeff) {
     this.coefficients = coeff;
     this.racines = new ArrayList<Double>();
   }
 
-  public Polynome derivee() {
+  public PolynomeNul derivee() {
     List<Double> p2 = new ArrayList<Double>();
     for (int i = 1; i<this.getPol().size(); i++) {
       p2.add(this.getPol().get(i)*i);
     }
-    Polynome derivee = new Polynome(p2);
+    PolynomeNul derivee = new PolynomeNul(p2);
     return derivee;
   }
 
@@ -41,7 +41,7 @@ public class Polynome {
       x = x - (this.calculP(x)/this.derivee().calculP(x));
       // System.out.println(x);
     }
-    // System.out.println("Une des racines de ce Polynome est environ : "+x);
+    // System.out.println("Une des racines de ce PolynomeNul est environ : "+x);
     return x;
   }
 
@@ -73,7 +73,7 @@ public class Polynome {
     System.out.println(this.racines);
   }
 
-  public static Polynome stringToPolynome(String str) {
+  public static PolynomeNul stringToPolynome(String str) {
     List<String> l = new ArrayList<String>();
     for (int i = 0; i<100; i++) {
       l.add("");
@@ -160,7 +160,7 @@ public class Polynome {
       pol.remove(m);
       m--;
     }
-    Polynome res = new Polynome(pol);
+    PolynomeNul res = new PolynomeNul(pol);
     return res;
   }
 

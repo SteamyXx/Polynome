@@ -17,6 +17,15 @@ public class Polynome {
     this.termes = this.stringToListeNombreX(polynome).getTermes();
   }
 
+  public Polynome(NombreX nbr) {
+    this.termes = new ArrayList<NombreX>();
+    this.termes.add(nbr);
+  }
+
+  public Polynome() {
+    this.termes = new ArrayList<NombreX>();
+  }
+
 
   public static String developper(String expression) {
     // System.out.println("entrée : "+expression);
@@ -187,6 +196,18 @@ public class Polynome {
   }
 
 
+  public Polynome derive() {
+    List<NombreX> res = new ArrayList<NombreX>();
+    for (NombreX nbr : this.termes) {
+      NombreX nbrDerive = nbr.derive();
+      if (nbrDerive.getCoeff() != -1) {
+        res.add(nbrDerive);
+      }
+    }
+    return new Polynome(res);
+  }
+
+
   public static Polynome stringToListeNombreX(String polynome) {
     if (polynome.charAt(0) == '(' && polynome.charAt(polynome.length()-1) == ')') {
       polynome = polynome.substring(1, polynome.length()-1);
@@ -211,16 +232,38 @@ public class Polynome {
     return this.termes.get(0);
   }
 
+  public boolean estNulle() {
+    return this.termes.size() == 0;
+  }
 
+  public void addNombreX(NombreX nbr) {
+    this.termes.add(nbr);
+  }
 
-  public Polynome diviserPar(Polynome div) {
+  public Polynome[] diviserPar(Polynome div) {
     Polynome dividende = new Polynome(this.termes);
     Polynome diviseur = new Polynome(div.getTermes());
-    List<NombreX> quotient = new ArrayList<NombreX>();
-    while () {
-
+    Polynome quotient = new Polynome();
+    NombreX dvddeNbrDgrDom = dividende.getTermeDegreDominant();
+    NombreX dvsrNbrDgrDom = diviseur.getTermeDegreDominant();
+    while (!dividende.estNulle() && dvddeNbrDgrDom.getDegreX() >= dvsrNbrDgrDom.getDegreX()) {
+      System.out.println("\n\n\ndvddeNbrDgrDom : "+dvddeNbrDgrDom);
+      System.out.println("dvsrNbrDgrDom : "+dvsrNbrDgrDom);
+      System.out.println("dividende : "+dividende);
+      System.out.println("diviseur : "+diviseur);
+      System.out.println("quotient : "+quotient);
+      NombreX ajoutQuotient = new NombreX(dvddeNbrDgrDom.getCoeff()/dvsrNbrDgrDom.getCoeff(), dvddeNbrDgrDom.getDegreX()-dvsrNbrDgrDom.getDegreX());
+      quotient.addNombreX(ajoutQuotient);
+      dividende = dividende.moins(diviseur.developper(new Polynome(ajoutQuotient)));
+      if (!dividende.estNulle() && dvddeNbrDgrDom.getDegreX() >= dvddeNbrDgrDom.getDegreX()) {
+        dvddeNbrDgrDom = dividende.getTermeDegreDominant();
+        dvsrNbrDgrDom = diviseur.getTermeDegreDominant();
+      }
     }
-    return new Polynome("0");
+    Polynome[] quotientReste = new Polynome[2];
+    quotientReste[0] = quotient;
+    quotientReste[1] = dividende;
+    return quotientReste;
   }
 
   public Polynome moins(Polynome termeDroit) {
@@ -243,8 +286,8 @@ public class Polynome {
   }
 
 
-  public int calculP(int x) {
-    int res = 0;
+  public double calculP(int x) {
+    double res = 0;
     for (NombreX nbr : this.termes) {
       res += nbr.calculP(x);
     }
@@ -266,7 +309,7 @@ public class Polynome {
         res += nbr.toString();
       }
     }
-    return (res == "") ? "0" + res;
+    return (res == "") ? "0" : res;
   }
 
 }

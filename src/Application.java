@@ -66,22 +66,22 @@ public class Application {
     ///////////////////////////////////////
     ///////////////////////////////////////
 
-    // Scanner s = new Scanner(System.in);
-    // Scanner s2 = new Scanner(System.in);
-    // String x = "", y = "";
-    // List<Point> liste_point = new ArrayList<Point>();
+    Scanner s = new Scanner(System.in);
+    Scanner s2 = new Scanner(System.in);
+    String x = "", y = "";
+    List<Point> liste_point = new ArrayList<Point>();
 
 
-    // Point p1 = new Point(7.5, 2.738613);
-    // liste_point.add(p1);
-    // Point p2 = new Point(9.1, 3.016621);
-    // liste_point.add(p2);
-    // Point p3 = new Point(12, 3.464102);
-    // liste_point.add(p3);
-    // Point p4 = new Point(3, 1.732051);
-    // liste_point.add(p4);
-    // Point p5 = new Point(1, 1);
-    // liste_point.add(p5);
+    Point p1 = new Point(7.5, 2.738613);
+    liste_point.add(p1);
+    Point p2 = new Point(9.1, 3.016621);
+    liste_point.add(p2);
+    Point p3 = new Point(12, 3.464102);
+    liste_point.add(p3);
+    Point p4 = new Point(3, 1.732051);
+    liste_point.add(p4);
+    Point p5 = new Point(1, 1);
+    liste_point.add(p5);
 
 
     /*
@@ -126,46 +126,48 @@ public class Application {
     * Polynome de Newton
     */
 
-    // System.out.println("\nEntrez n points et je vais trouver l'unique polynome passant par ces n points");
-    // int i = 0;
-    // int nbr_point = 0;
-    // System.out.println("\nCombien de points voulez vous ?");
-    // nbr_point = s.nextInt();
-    // System.out.println();
-    // while (i<nbr_point) {
-    //   System.out.println("Point "+(i+1)+" : ");
-    //   System.out.print("X = ");
-    //   x = s2.nextLine();
-    //   System.out.print("Y = ");
-    //   y = s2.nextLine();
-    //   liste_point.add(new Point(Double.parseDouble(x), Double.parseDouble(y)));
-    //   System.out.println();
-    //   i++;
-    // }
-    // System.out.println("P(x) = "+PolynomeDeNewton.getPolynomeDeNewton(liste_point)+"\n");
+    System.out.println("\nEntrez n points et je vais trouver l'unique polynome passant par ces n points");
+    int i = 0;
+    int nbr_point = 0;
+    System.out.println("\nCombien de points voulez vous ?");
+    nbr_point = s.nextInt();
+    System.out.println();
+    while (i<nbr_point) {
+      System.out.println("Point "+(i+1)+" : ");
+      System.out.print("X = ");
+      x = s2.nextLine();
+      System.out.print("Y = ");
+      y = s2.nextLine();
+      liste_point.add(new Point(Double.parseDouble(x), Double.parseDouble(y)));
+      System.out.println();
+      i++;
+    }
+    System.out.println("P(x) = "+PolynomeDeNewton.getPolynomeDeNewton(liste_point)+"\n");
 
 
     /*
     * Divers méthodes
     */
 
-    Scanner sc = new Scanner(System.in);
-    System.out.print("Votre 1er Polynome : P(x) = ");
-    String poly = sc.nextLine();
-    Polynome pol = new Polynome(poly);
-    System.out.println("P(x) = "+pol.toString());
-    System.out.print("Votre 2eme Polynome : P(x) = ");
-    String poly2 = sc.nextLine();
-    Polynome pol2 = new Polynome(poly2);
-    System.out.println("Q(x) = "+pol2.toString());
-    Polynome p1 = pol.moins(pol2);
-    Polynome p2 = pol.plus(pol2);
-    Polynome p3 = pol.diviserPar(pol2);
-    NombreX n1 = pol.getTermeDegreDominant();
-    System.out.println("\n("+pol.toString()+")-("+pol2.toString()+") = "+p1.toString());
-    System.out.println("\n("+pol.toString()+")+("+pol2.toString()+") = "+p2.toString());
-    System.out.println("\n("+pol.toString()+")/("+pol2.toString()+") = "+p3.toString());
-    System.out.println("\n("+pol.toString()+") : degré dominant = "+n1.toString());
+    // Scanner sc = new Scanner(System.in);
+    // System.out.print("Votre 1er Polynome : P(x) = ");
+    // String poly = sc.nextLine();
+    // Polynome pol = new Polynome(poly);
+    // System.out.println("P(x) = "+pol.toString());
+    // System.out.print("Votre 2eme Polynome : P(x) = ");
+    // String poly2 = sc.nextLine();
+    // Polynome pol2 = new Polynome(poly2);
+    // System.out.println("Q(x) = "+pol2.toString());
+    // Polynome p1 = pol.moins(pol2);
+    // Polynome p2 = pol.plus(pol2);
+    // Polynome[] p3 = pol.diviserPar(pol2);
+    // NombreX n1 = pol.getTermeDegreDominant();
+    // Polynome derive = pol.derive();
+    // System.out.println("\n("+pol.toString()+")-("+pol2.toString()+") = "+p1.toString());
+    // System.out.println("\n("+pol.toString()+")+("+pol2.toString()+") = "+p2.toString());
+    // System.out.println("\n("+pol.toString()+")/("+pol2.toString()+") = Quotient : "+p3[0].toString()+" Reste : "+p3[1].toString());
+    // System.out.println("\n("+pol.toString()+") : degré dominant = "+n1.toString());
+    // System.out.println("\n("+pol.toString()+") : derive = "+derive.toString());
 
 
   }

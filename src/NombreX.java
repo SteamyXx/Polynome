@@ -5,15 +5,15 @@ import java.lang.*;
 
 public class NombreX implements Comparable<NombreX> {
 
-  private int coeff;
+  private double coeff;
   private int degreX;
 
-  public NombreX(int coeff, int degreX) {
+  public NombreX(double coeff, int degreX) {
     this.coeff = coeff;
     this.degreX = degreX;
   }
 
-  public NombreX(int coeff) {
+  public NombreX(double coeff) {
     this.coeff = coeff;
     this.degreX = 0;
   }
@@ -26,7 +26,12 @@ public class NombreX implements Comparable<NombreX> {
       } else if (nbr.substring(0, 2).equals("-x")) {
         this.coeff = -1;
       } else {
-        this.coeff = Integer.parseInt(splitedNbr[0]);
+        if (splitedNbr[0].contains("/")) {
+          String[] splitedCoeff = splitedNbr[0].split("/");
+          this.coeff = Double.parseDouble(splitedCoeff[0]) / Double.parseDouble(splitedCoeff[1]);
+        } else {
+          this.coeff = Double.parseDouble(splitedNbr[0]);
+        }
       }
       if (nbr.charAt(nbr.length()-1) == 'x') {
         this.degreX = 1;
@@ -34,7 +39,12 @@ public class NombreX implements Comparable<NombreX> {
         this.degreX = Integer.parseInt(splitedNbr[1].substring(1, splitedNbr[1].length()));
       }
     } else {
-      this.coeff = Integer.parseInt(nbr);
+      if (nbr.contains("/")) {
+        String[] splitedCoeff = nbr.split("/");
+        this.coeff = Double.parseDouble(splitedCoeff[0]) / Double.parseDouble(splitedCoeff[1]);
+      } else {
+        this.coeff = Double.parseDouble(nbr);
+      }
       this.degreX = 0;
     }
   }
@@ -43,11 +53,11 @@ public class NombreX implements Comparable<NombreX> {
     return new NombreX(-this.coeff, this.degreX);
   }
 
-  public int calculP(int x) {
-    return this.coeff * (int)Math.pow(x, this.degreX);
+  public double calculP(int x) {
+    return this.coeff * Math.pow(x, this.degreX);
   }
 
-  public int getCoeff() {
+  public double getCoeff() {
     return this.coeff;
   }
 
@@ -65,6 +75,10 @@ public class NombreX implements Comparable<NombreX> {
 
   public NombreX fois(NombreX nx) {
     return new NombreX(this.getCoeff() * nx.getCoeff(), this.getDegreX() + nx.getDegreX());
+  }
+
+  public NombreX derive() {
+    return new NombreX(this.getCoeff()*this.getDegreX(), this.getDegreX()-1);
   }
 
   //NombreX(0, -1) ----> l'opération ne s'est pas passé comme prévu
