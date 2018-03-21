@@ -53,7 +53,7 @@ public class NombreX implements Comparable<NombreX> {
     return new NombreX(-this.coeff, this.degreX);
   }
 
-  public double calculP(int x) {
+  public double calculP(double x) {
     return this.coeff * Math.pow(x, this.degreX);
   }
 

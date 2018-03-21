@@ -1,4 +1,4 @@
-package appli;
+package math;
 
 import java.util.*;
 import math.*;
@@ -15,7 +15,7 @@ public class PolynomeDeNewton {
       points.add(liste_point.get(k));
     }
     polynomeDeNewton.add(liste_point.get(0).getY());
-    for (int j = 0; j<liste_point.size()-1; j++) {
+    for (int j = 0; j<liste_point.size(); j++) {
       taille = points.size();
       for (int i = 0; i<taille-1; i++) {
         if (j == 0) {
@@ -44,7 +44,8 @@ public class PolynomeDeNewton {
           if (liste_point.get(j).getX() >= 0) {
             res += "(x-"+liste_point.get(j).getX()+")";
           } else {
-            res += "(x"+liste_point.get(j).getX()+")";
+            String negatifRes = String.valueOf(liste_point.get(j).getX());
+            res += "(x+"+negatifRes.substring(1, negatifRes.length())+")";
           }
         }
       }
